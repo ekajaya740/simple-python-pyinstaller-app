@@ -1,7 +1,7 @@
 node {
   def image
   stage("Pull Image"){
-    image = docker.image('node:16-buster-slim')
+    image = docker.image('python:2-alpine')
     image.pull()
   }
   stage('Build'){
