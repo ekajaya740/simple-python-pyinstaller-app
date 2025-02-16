@@ -10,7 +10,7 @@ node {
     py.pull()
     pyTest.pull()
     pyInstaller.pull()
-  })
+  }
   stage('Build'){
     py.inside{
       sh 'python -m py_compile ./sources/add2vals.py ./sources/calc.py'
