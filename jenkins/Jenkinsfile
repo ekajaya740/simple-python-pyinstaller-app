@@ -1,33 +1,45 @@
-node {
-    // Define environment variables
-    def PYTHON_IMAGE = 'python:2-alpine'
-    def PYTEST_IMAGE = 'qnib/pytest'
-    def PYINSTALLER_IMAGE = 'cdrx/pyinstaller-linux:python2'
-    def SOURCES_DIR = 'sources'
-    def DIST_DIR = 'dist'
-
-    stage('Build') {
-        docker.image(PYTHON_IMAGE).inside {
-            sh "python -m py_compile ${SOURCES_DIR}/add2vals.py ${SOURCES_DIR}/calc.py"
+pipeline {
+    agent none
+    stages {
+        stage('Build') {
+            agent {
+                docker {
+                    image 'python:2-alpine'
+                }
+            }
+            steps {
+                sh 'python -m py_compile sources/add2vals.py sources/calc.py'
+            }
         }
-    }
-
-    stage('Test') {
-        docker.image(PYTEST_IMAGE).inside {
-            sh "py.test --verbose --junit-xml test-reports/results.xml ${SOURCES_DIR}/test_calc.py"
+        stage('Test') {
+            agent {
+                docker {
+                    image 'qnib/pytest'
+                }
+            }
+            steps {
+                sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
+            }
+            post {
+                always {
+                    junit 'test-reports/results.xml'
+                }
+            }
         }
-        junit 'test-reports/results.xml' // Process test results after the container exits
-    }
-
-    stage('Deliver') {
-        docker.image(PYINSTALLER_IMAGE).inside {
-            sh "pyinstaller --onefile ${SOURCES_DIR}/add2vals.py"
+        stage('Deliver') {
+            agent {
+                docker {
+                    image 'cdrx/pyinstaller-linux:python2'
+                }
+            }
+            steps {
+                sh 'pyinstaller --onefile sources/add2vals.py'
+            }
+            post {
+                success {
+                    archiveArtifacts 'dist/add2vals'
+                }
+            }
         }
-        archiveArtifacts "${DIST_DIR}/add2vals" // Archive artifacts after the container exits
-    }
-
-    // Clean up Docker containers and images
-    stage('Cleanup') {
-        sh 'docker system prune -f'
     }
 }
