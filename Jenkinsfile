@@ -19,18 +19,13 @@ node {
   stage("Test"){
     pyTest.inside{
         sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
-        always {
-          junit 'test-reports/results.xml'
-        }
     }
+    junit 'test-reports/results.xml'
   }
   stage("Deliver"){
     pyInstaller.inside {
       sh 'pyinstaller --onefile sources/add2vals.py'
-      success {
-        archiveArtifacts 'dist/add2vals'
-      }
     }
+    archiveArtifacts 'dist/add2vals'
   }
-
 }
