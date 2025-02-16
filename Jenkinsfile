@@ -25,11 +25,4 @@ node {
         }
         junit 'test-reports/results.xml' // Process test results after the container exits
     }
-
-    stage("Deliver") {
-        docker.image('cdrx/pyinstaller-linux:python2').inside {
-            sh 'pyinstaller --onefile sources/add2vals.py'
-        }
-        archiveArtifacts 'dist/add2vals'// Archive artifacts after the container exits
-    }
 }
