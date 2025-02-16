@@ -27,9 +27,10 @@ node {
   stage("Deliver"){
     pyInstaller.inside {
       sh 'pyinstaller --onefile sources/add2vals.py'
-    }
-    always {
-      archiveArtifacts 'dist/add2vals'
+      always {
+        archiveArtifacts 'dist/add2vals'
+      }
+
     }
   }
 }
