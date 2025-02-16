@@ -27,9 +27,9 @@ node {
     }
 
     stage("Deliver") {
-        pyInstaller.inside {
-            sh 'pyinstaller --onefile sources/add2vals.py'
+        docker.withRun('cdrx/pyinstaller-linux:python2', '-v /path/to/sources:/sources -v /path/to/dist:/dist') { c ->
+            sh "docker exec ${c.id} pyinstaller --onefile /sources/add2vals.py"
         }
-        archiveArtifacts 'dist/add2vals' // Archive artifacts after the container exits
+        archiveArtifacts 'dist/add2vals'// Archive artifacts after the container exits
     }
 }
