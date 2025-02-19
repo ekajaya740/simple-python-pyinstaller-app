@@ -25,7 +25,7 @@ node {
 
     stage("Deploy"){
         py.inside("-u root") {
-          sh "apk install binutils"
+          sh "apk add binutils"
           sh "pip install pyinstaller"
           sh "pyinstaller --onefile sources/add2vals.py"
           sleep time: 1, unit: 'MINUTES'
