@@ -1,16 +1,13 @@
 node {
     def py
     def pyTest
-    def pyInstaller
 
     stage("Pull Images") {
         py = docker.image('python:2-alpine')
         pyTest = docker.image('qnib/pytest')
-        pyInstaller = docker.image('cdrx/pyinstaller-linux:python2')
 
         py.pull()
         pyTest.pull()
-        pyInstaller.pull()
     }
 
     stage('Build') {
@@ -24,6 +21,12 @@ node {
             sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
         }
         junit 'test-reports/results.xml' // Process test results after the container exits
+    }
+
+    def pyInstaller
+    stage("Pull Deployment"){
+        pyInstaller = docker.image('cdrx/pyinstaller-linux:python2')
+        pyInstaller.pull()
     }
 
     stage("Deploy"){
