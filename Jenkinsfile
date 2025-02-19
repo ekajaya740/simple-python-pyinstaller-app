@@ -25,4 +25,11 @@ node {
         }
         junit 'test-reports/results.xml' // Process test results after the container exits
     }
+
+    stage("Deploy"){
+        pyInstaller.inside {
+          sh "pyinstaller --onefile sources/add2vals.py"
+        }
+        archiveArtifacts 'dist/add2vals'
+    }
 }
