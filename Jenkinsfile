@@ -24,7 +24,7 @@ node {
     }
 
     stage("Deploy"){
-        python.inside {
+        py.inside {
           sh "pip install pyinstaller"
           sh "pyinstaller --onefile sources/add2vals.py"
           sleep time: 1, unit: 'MINUTES'
