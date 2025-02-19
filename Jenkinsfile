@@ -3,7 +3,7 @@ node {
     def pyTest
 
     stage("Pull Images") {
-        py = docker.image('python:2-alpine')
+        py = docker.image('python:3-alpine')
         pyTest = docker.image('qnib/pytest')
 
         py.pull()
