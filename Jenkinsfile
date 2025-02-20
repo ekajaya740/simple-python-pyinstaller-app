@@ -39,11 +39,10 @@ node {
         archiveArtifacts 'dist/add2vals'
     }
 
-    stage("Send to EC2"){
+    stage("Publish to EC2"){
       sshPublisher(
         publishers: [
                         sshPublisherDesc(
-                            configName: 'my-ec2-instance',
                             transfers: [
                                 sshTransfer(
                                     sourceFiles: 'dist/add2vals*',
