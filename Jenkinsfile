@@ -48,7 +48,7 @@ node {
                                 sshTransfer(
                                     sourceFiles: 'dist/add2vals*',
                                     removePrefix: 'dist/',
-                                    remoteDirectory: '/home/dicoding', 
+                                    remoteDirectory: '/dicoding', 
                                 )
                             ],
                             usePromotionTimestamp: false,
