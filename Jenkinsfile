@@ -23,6 +23,11 @@ node {
         junit 'test-reports/results.xml' // Process test results after the container exits
     }
 
+    stage("Manual Approval") {
+        input message: 'Lanjutkan ke tahap Deploy?'
+
+    }
+
     stage("Deploy"){
         py.inside("-u root") {
           sh "apk add binutils"
