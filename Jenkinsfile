@@ -43,6 +43,7 @@ node {
       sshPublisher(
         publishers: [
                         sshPublisherDesc(
+                            configName: 'my-ec2-instance',
                             transfers: [
                                 sshTransfer(
                                     sourceFiles: 'dist/add2vals*',
