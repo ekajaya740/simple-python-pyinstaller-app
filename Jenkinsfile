@@ -38,22 +38,4 @@ node {
         }
         archiveArtifacts 'dist/add2vals'
     }
-
-    stage("Publish to EC2"){
-      sshPublisher(
-        publishers: [
-                        sshPublisherDesc(
-                            transfers: [
-                                sshTransfer(
-                                    sourceFiles: 'dist/add2vals*',
-                                    removePrefix: 'dist/',
-                                    remoteDirectory: '/home/dicoding', 
-                                )
-                            ],
-                            usePromotionTimestamp: false,
-                            verbose: true
-                        )
-                    ]
-      )
-    }
 }
